@@ -1,5 +1,13 @@
-import { useState } from "react";
 import useInput from "../hooks/use-input";
+
+const isEmpty = (value) => value.trim() !== "";
+const isEmail = (value) => {
+  const emailRegex = new RegExp(
+    /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
+    "gm"
+  );
+  return emailRegex.test(value);
+};
 
 const SimpleInput = (props) => {
   const {
@@ -9,7 +17,7 @@ const SimpleInput = (props) => {
     valueChangeHandler: nameChangeHandler,
     inputBlurHandler: nameBlurHandler,
     reset: resetName,
-  } = useInput((value) => value.trim() !== "");
+  } = useInput(isEmpty);
   const {
     value: enteredEmail,
     isValid: enteredEmailIsValid,
@@ -17,13 +25,7 @@ const SimpleInput = (props) => {
     valueChangeHandler: emailChangeHandler,
     inputBlurHandler: emailBlurHandler,
     reset: resetEmail,
-  } = useInput((value) => {
-    const emailRegex = new RegExp(
-      /^[A-Za-z0-9_!#$%&'*+\/=?`{|}~^.-]+@[A-Za-z0-9.-]+$/,
-      "gm"
-    );
-    return emailRegex.test(value);
-  });
+  } = useInput(isEmail);
 
   let formIsValid = nameHasError && emailHasError;
 
